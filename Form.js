@@ -1,9 +1,12 @@
 import React from 'react'
-import {View,Text,Button,TextInput,FlatList,TouchableNativeFeedback} from 'react-native'
+import {View,Text,Button,TextInput,FlatList,TouchableNativeFeedback,ToastAndroid} from 'react-native'
 import firebase from 'react-native-firebase'
 
 class Form extends React.Component
 {
+    static navigationOptions = {
+        header: null,
+    };
     constructor()
     {
         super()
@@ -41,11 +44,16 @@ class Form extends React.Component
         if(this.state.action=="add")
         {
             firebase.database().ref('Text').push(data).key;
+            ToastAndroid.show('Data is added!', ToastAndroid.SHORT);
         }
         else
         {
             firebase.database().ref('Text/'+this.state.id).update(data)
+            ToastAndroid.show('Data is updated!', ToastAndroid.SHORT);
         }
+        this.setState({
+            text:""
+        })
         
     }
     _edit=(text,id)=>
@@ -59,14 +67,15 @@ class Form extends React.Component
     _hapus=(id)=>
     {
         firebase.database().ref('Text/'+id).remove()
+        ToastAndroid.show('A data has been deleted!', ToastAndroid.SHORT);
     }
     render()
     {
-        return(<View>
+        return(<View style={{padding:10}}>
             <Text>FORM CRUD</Text>
             <TextInput 
                 onChangeText={(text)=>this.setState({text:text})}
-                style={{backgroundColor:"#fff",borderBottomColor:"#000",borderBottomWidth:1}}
+                style={{backgroundColor:"#fff",borderColor:"#000",borderWidth:1}}
                 placeholder="Masukkan nama barang"
                 value={this.state.text}
             />
@@ -90,6 +99,7 @@ class Form extends React.Component
                                 <Button 
                                     title="x"
                                     onPress={()=>this._hapus(item.id)}
+                                    color="red"
                                 />
                             </View>
                       

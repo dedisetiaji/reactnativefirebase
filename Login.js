@@ -1,5 +1,5 @@
 import React from 'react'
-import {View} from 'react-native'
+import {View,Text} from 'react-native'
 import { GoogleSignin,GoogleSigninButton } from 'react-native-google-signin';
 import firebase from 'react-native-firebase'
 
@@ -7,6 +7,9 @@ import firebase from 'react-native-firebase'
 
 class Login extends React.Component
 {
+    static navigationOptions = {
+        header: null,
+    };
     constructor(props)
     {
        super(props)
@@ -28,7 +31,8 @@ class Login extends React.Component
               // login with credential
               const currentUser = await firebase.auth().signInWithCredential(credential);
           
-              alert(JSON.stringify(currentUser.user.toJSON()));
+            //   alert(JSON.stringify(currentUser.user.toJSON()));
+            this.props.navigation.navigate("Form")
               
             } catch (e) {
               console.error(e);
@@ -39,7 +43,10 @@ class Login extends React.Component
     render()
     {
         return(
-            <View>
+            <View style={{display:"flex",justifyContent:"center",alignItems:"center",flex:1}}>
+            <Text>
+                Please login using this button
+            </Text>
             <GoogleSigninButton
             style={{ width: 312, height: 48 }}
             size={GoogleSigninButton.Size.Wide}
