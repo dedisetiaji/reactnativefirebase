@@ -56,6 +56,10 @@ class Form extends React.Component
             action:"update"
         })
     }
+    _hapus=(id)=>
+    {
+        firebase.database().ref('Text/'+id).remove()
+    }
     render()
     {
         return(<View>
@@ -73,15 +77,22 @@ class Form extends React.Component
             <FlatList 
                  data={this.state.data}
                  keyExtractor={item=>String(item.id)}
-                 renderItem={({item,id})=>
+                 renderItem={({item,index})=>
                     <View style={{flexDirection:"row",padding:5}}>
                        <TouchableNativeFeedback
                         onPress={()=>this._edit(item.text,item.id)}
                        >
-                            <View style={{flex:1}}>
-                                <Text>{id+1}{item.text}</Text>
+                            <View style={{flex:4}}>
+                                <Text>{index+1} {item.text}</Text>
                             </View>
-                       </TouchableNativeFeedback> 
+                        </TouchableNativeFeedback> 
+                            <View style={{flex:1}}>
+                                <Button 
+                                    title="x"
+                                    onPress={()=>this._hapus(item.id)}
+                                />
+                            </View>
+                      
                     </View>
                 }
             />
